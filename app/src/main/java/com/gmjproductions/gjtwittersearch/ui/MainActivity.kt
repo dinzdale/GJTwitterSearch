@@ -1,5 +1,6 @@
 package com.gmjproductions.gjtwittersearch.ui
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -10,8 +11,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
-import com.twitter.sdk.android.core.TwitterCore
-import com.twitter.sdk.android.core.TwitterSession
+import com.gmjproductions.gjtwittersearch.model.SessionViewModel
+import com.twitter.sdk.android.core.*
 import kotlinx.android.synthetic.main.activity_main.*
 import layout.SearchTweetsFragment
 
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity(), ConnectionStatusUpdate {
     val CONNECTED = "CONNECTED"
 
     private var connectedStatus: Boolean = false
+    lateinit var sessionViewModel: SessionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,17 +33,21 @@ class MainActivity : AppCompatActivity(), ConnectionStatusUpdate {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
-        savedInstanceState?.let {
-            connectedStatus = savedInstanceState.getBoolean(CONNECTED)
-             if (TwitterCore.getInstance().sessionManager == null) {
-                 connectedStatus = true
-             }
-            else {
-                 connectedStatus = false
-                 fragmentLoader(LoginTwitterFragment(), LoginTwitterFragment.TAG)
-             }
 
+        // check for saved session
+        sessionViewModel = ViewModelProviders.of(this).get(SessionViewModel::class.java)
+
+        sessionViewModel.session?.let {
+            // restore session
+            TwitterCore.getInstance().sessionManager.activeSession = it
         } ?: fragmentLoader(LoginTwitterFragment(), LoginTwitterFragment.TAG)
+
+        val twitterConfig = TwitterConfig.Builder(this)
+                .logger(DefaultLogger(Log.DEBUG))
+                .debug(true)
+                .build()
+        Twitter.initialize(twitterConfig)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -86,11 +92,21 @@ class MainActivity : AppCompatActivity(), ConnectionStatusUpdate {
     fun findFragment(tag: String): Fragment? = supportFragmentManager
             .findFragmentByTag(tag)
 
+    fun removeFragment(tag: String) {
+        val fragmentToRemove = findFragment(tag)
+        fragmentToRemove?.let {
+            supportFragmentManager
+                    .beginTransaction()
+                    .remove(it)
+                    .commit()
+        }
+    }
 
     override fun connectionSuccess(status: Boolean) {
         connectedStatus = status
         if (connectedStatus) {
             fragmentLoader(SearchTweetsFragment(), SearchTweetsFragment.TAG)
+            removeFragment(LoginTwitterFragment.TAG)
         }
     }
 }

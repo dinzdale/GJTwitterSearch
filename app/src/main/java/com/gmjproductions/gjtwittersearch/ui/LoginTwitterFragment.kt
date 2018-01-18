@@ -6,16 +6,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
 import com.gmjproductions.gjtwittersearch.model.SessionViewModel
-import com.twitter.sdk.android.core.Callback
-import com.twitter.sdk.android.core.Result
-import com.twitter.sdk.android.core.TwitterException
-import com.twitter.sdk.android.core.TwitterSession
+import com.twitter.sdk.android.core.*
 import kotlinx.android.synthetic.main.login_twitter.*
 
 /**
@@ -58,6 +56,8 @@ class LoginTwitterFragment : Fragment() {
                 Toast.makeText(context, "Twitter Login: Success", Toast.LENGTH_LONG).show()
                 // save the successful session
                 sessionViewModel.session = result.data
+                // make the active session
+                TwitterCore.getInstance().sessionManager.activeSession = result.data
                 // notify parent activity of succesful authentication
                 myactivity.connectionSuccess(true)
             }
@@ -79,4 +79,21 @@ class LoginTwitterFragment : Fragment() {
         login_button.onActivityResult(requestCode, resultCode, data)
 
     }
+
+
+
+    // set up list
+//    class TweetViewHolder(itemView:View) : RecyclerView.ViewHolder() {
+//        
+//    }
+//    class TweetListAdapter : RecyclerView.Adapter<TweetViewHolder>() {
+//        override fun onBindViewHolder(holder: TweetViewHolder?, position: Int) {
+//        }
+//
+//        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TweetViewHolder {
+//        }
+//
+//        override fun getItemCount(): Int {
+//        }
+//    }
 }

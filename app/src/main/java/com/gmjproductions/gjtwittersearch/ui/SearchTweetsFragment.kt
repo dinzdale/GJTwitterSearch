@@ -48,7 +48,9 @@ class SearchTweetsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // get twitterApiClient from connected session
-        twitterApiClient = TwitterCore.getInstance().getApiClient(sessionViewModel.session)
+        //twitterApiClient = TwitterCore.getInstance().getApiClient(sessionViewModel.session)
+        twitterApiClient = TwitterCore.getInstance().getApiClient()
+
         savedInstanceState?.let {
 
         }
