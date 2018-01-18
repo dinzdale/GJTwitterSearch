@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
 
 import kotlinx.android.synthetic.main.activity_main.*
+import layout.SearchTweetsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         fragment?.let {
             fragment.onActivityResult(requestCode, resultCode, data)
         }
+        fragmentLoader(SearchTweetsFragment(),SearchTweetsFragment::class.java.simpleName)
     }
 
     fun fragmentLoader(fragment: Fragment, tag:String) {
