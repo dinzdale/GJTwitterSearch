@@ -1,5 +1,6 @@
 package com.gmjproductions.gjtwittersearch.ui
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
+import com.gmjproductions.gjtwittersearch.model.SessionViewModel
 import com.twitter.sdk.android.core.Callback
 import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterException
@@ -20,7 +22,15 @@ import kotlinx.android.synthetic.main.login_twitter.*
  * Created by garyjacobs on 1/17/18.
  */
 class LoginTwitterFragment : Fragment() {
-    lateinit var myactivity: FragmentActivity
+    companion object {
+        @JvmStatic
+        val TAG = LoginTwitterFragment::class.java.simpleName
+    }
+
+    lateinit var myactivity: MainActivity
+    lateinit var sessionViewModel: SessionViewModel
+
+    var isLoggedIn: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,25 +46,37 @@ class LoginTwitterFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        myactivity = activity!!
+        myactivity = activity as MainActivity
+        sessionViewModel = ViewModelProviders.of(myactivity).get(SessionViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         login_button.callback = object : Callback<TwitterSession>() {
 
-            override fun success(result: Result<TwitterSession>?) {
-                Toast.makeText(context,"Twitter Login: Success",Toast.LENGTH_LONG).show()
+            override fun success(result: Result<TwitterSession>) {
+                Toast.makeText(context, "Twitter Login: Success", Toast.LENGTH_LONG).show()
+                // save the successful session
+                sessionViewModel.session = result.data
+                // notify parent activity of succesful authentication
+                myactivity.connectionSuccess(true)
             }
 
             override fun failure(exception: TwitterException?) {
-                Toast.makeText(context,"Twitter Login: Failure: ${exception!!.message}",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Twitter Login: Failure: ${exception!!.message}", Toast.LENGTH_LONG).show()
+                myactivity.connectionSuccess(false)
             }
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        login_button.onActivityResult(requestCode,resultCode,data)
+        login_button.onActivityResult(requestCode, resultCode, data)
+
     }
 }

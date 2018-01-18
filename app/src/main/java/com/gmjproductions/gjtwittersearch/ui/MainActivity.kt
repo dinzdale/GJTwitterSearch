@@ -10,11 +10,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
-
+import com.twitter.sdk.android.core.TwitterCore
+import com.twitter.sdk.android.core.TwitterSession
 import kotlinx.android.synthetic.main.activity_main.*
 import layout.SearchTweetsFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ConnectionStatusUpdate {
+
+
+    val CONNECTED = "CONNECTED"
+
+    private var connectedStatus: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +31,17 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
-        fragmentLoader(LoginTwitterFragment(),LoginTwitterFragment::class.java.simpleName)
+        savedInstanceState?.let {
+            connectedStatus = savedInstanceState.getBoolean(CONNECTED)
+             if (TwitterCore.getInstance().sessionManager == null) {
+                 connectedStatus = true
+             }
+            else {
+                 connectedStatus = false
+                 fragmentLoader(LoginTwitterFragment(), LoginTwitterFragment.TAG)
+             }
+
+        } ?: fragmentLoader(LoginTwitterFragment(), LoginTwitterFragment.TAG)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -46,18 +62,35 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Toast.makeText(this, "MainActivity onActivityResult called", Toast.LENGTH_LONG)
-        val fragment : Fragment? = supportFragmentManager.findFragmentByTag(LoginTwitterFragment::class.java.simpleName)
-        fragment?.let {
-            fragment.onActivityResult(requestCode, resultCode, data)
+        // forward connection result back to login fragment (and it's button)
+        findFragment(LoginTwitterFragment.TAG)?.let {
+            it.onActivityResult(requestCode, resultCode, data)
         }
-        fragmentLoader(SearchTweetsFragment(),SearchTweetsFragment::class.java.simpleName)
     }
 
-    fun fragmentLoader(fragment: Fragment, tag:String) {
-        val fm = supportFragmentManager
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putBoolean(CONNECTED, connectedStatus)
+    }
+
+    fun fragmentLoader(fragment: Fragment, tag: String, addToBackStack: Boolean = false) {
+        val fragTransaction = supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_container, fragment,tag)
-                .commit()
+                .replace(R.id.main_container, fragment, tag)
+        if (addToBackStack) {
+            fragTransaction.addToBackStack(tag)
+        }
+        fragTransaction.commit()
+    }
+
+    fun findFragment(tag: String): Fragment? = supportFragmentManager
+            .findFragmentByTag(tag)
+
+
+    override fun connectionSuccess(status: Boolean) {
+        connectedStatus = status
+        if (connectedStatus) {
+            fragmentLoader(SearchTweetsFragment(), SearchTweetsFragment.TAG)
+        }
     }
 }
