@@ -2,9 +2,13 @@ package layout
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.AppCompatEditText
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +20,11 @@ import com.gmjproductions.gjtwittersearch.model.SessionViewModel
 import com.gmjproductions.gjtwittersearch.ui.MainActivity
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.models.Search
+import com.twitter.sdk.android.core.models.Tweet
 import com.twitter.sdk.android.core.services.params.Geocode
+import com.twitter.sdk.android.tweetui.TweetView
 import kotlinx.android.synthetic.main.search_tweets.*
+import kotlinx.android.synthetic.main.search_tweets.view.*
 import retrofit2.http.Query
 
 /**
@@ -50,10 +57,7 @@ class SearchTweetsFragment : Fragment() {
         // get twitterApiClient from connected session
         //twitterApiClient = TwitterCore.getInstance().getApiClient(sessionViewModel.session)
         twitterApiClient = TwitterCore.getInstance().getApiClient()
-
-        savedInstanceState?.let {
-
-        }
+        tweet_list.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
 
         search_entry.setOnEditorActionListener { textView, actionId, _ ->
             var retValue = false
@@ -75,8 +79,9 @@ class SearchTweetsFragment : Fragment() {
                         null)
                 call.enqueue(object : Callback<Search>() {
                     override fun success(result: Result<Search>?) {
-                        val searchresult = result?.data
-                        Toast.makeText(context, "Got result", Toast.LENGTH_LONG).show()
+                        result?.data?.tweets?.let {
+                            tweet_list.adapter = TweetListAdapter(it)
+                        }
                     }
 
                     override fun failure(exception: TwitterException?) {
@@ -88,5 +93,28 @@ class SearchTweetsFragment : Fragment() {
             retValue
         }
 
+
+    }
+
+    // set up list
+    class TweetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tweetView : TweetView = itemView as TweetView
+    }
+
+    inner class TweetListAdapter(tweetList: List<Tweet>) : RecyclerView.Adapter<TweetViewHolder>() {
+        val tweetList = tweetList
+
+        override fun onBindViewHolder(holder: TweetViewHolder, position: Int) {
+            holder.tweetView.tweet = tweetList.get(position)
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TweetViewHolder {
+            return TweetViewHolder(TweetView(context, tweetList[0]))
+
+        }
+
+        override fun getItemCount(): Int {
+            return tweetList.size
+        }
     }
 }

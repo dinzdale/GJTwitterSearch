@@ -6,7 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +16,10 @@ import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
 import com.gmjproductions.gjtwittersearch.model.SessionViewModel
 import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.models.Tweet
+import com.twitter.sdk.android.tweetui.TweetView
 import kotlinx.android.synthetic.main.login_twitter.*
+import kotlinx.android.synthetic.main.search_tweets.*
 
 /**
  * Created by garyjacobs on 1/17/18.
@@ -42,6 +47,7 @@ class LoginTwitterFragment : Fragment() {
         return inflater.inflate(R.layout.login_twitter, null)
     }
 
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         myactivity = activity as MainActivity
@@ -67,6 +73,7 @@ class LoginTwitterFragment : Fragment() {
                 myactivity.connectionSuccess(false)
             }
         }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -80,20 +87,4 @@ class LoginTwitterFragment : Fragment() {
 
     }
 
-
-
-    // set up list
-//    class TweetViewHolder(itemView:View) : RecyclerView.ViewHolder() {
-//        
-//    }
-//    class TweetListAdapter : RecyclerView.Adapter<TweetViewHolder>() {
-//        override fun onBindViewHolder(holder: TweetViewHolder?, position: Int) {
-//        }
-//
-//        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TweetViewHolder {
-//        }
-//
-//        override fun getItemCount(): Int {
-//        }
-//    }
 }
