@@ -42,7 +42,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.9.1'
     implementation 'com.squareup.okhttp3:okhttp:3.9.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-
     implementation "android.arch.lifecycle:common-java8:1.0.0"
     kapt "android.arch.persistence.room:compiler:1.0.0"
     // RxJava support for Room
@@ -55,4 +54,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
 
-}4
+}

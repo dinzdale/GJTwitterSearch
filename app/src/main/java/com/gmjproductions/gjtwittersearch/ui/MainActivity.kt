@@ -1,10 +1,14 @@
-package com.gmjproductions.gjtwittersearch
+package com.gmjproductions.gjtwittersearch.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import com.gmjproductions.gjtwittersearch.R
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -19,6 +23,7 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+        fragmentLoader(LoginTwitterFragment())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -35,5 +40,17 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Toast.makeText(this, "MainActivity onActivityResult called", Toast.LENGTH_LONG)
+    }
+
+    fun fragmentLoader(fragment: Fragment) {
+        val fm = supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.main_container, fragment)
+                .commit()
     }
 }
