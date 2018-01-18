@@ -1,12 +1,10 @@
 package com.gmjproductions.gjtwittersearch.ui
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
-import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,13 +48,13 @@ class LoginTwitterFragment : Fragment() {
             }
 
             override fun failure(exception: TwitterException?) {
-                Toast.makeText(context,"Twitter Login: Failure",Toast.LENGTH_LONG).show()
+                Toast.makeText(context,"Twitter Login: Failure: ${exception!!.message}",Toast.LENGTH_LONG).show()
             }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Toast.makeText(context,"Fragment onActivityResult called",Toast.LENGTH_LONG)
+        login_button.onActivityResult(requestCode,resultCode,data)
     }
 }

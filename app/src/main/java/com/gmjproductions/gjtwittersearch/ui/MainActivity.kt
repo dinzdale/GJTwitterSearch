@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
-        fragmentLoader(LoginTwitterFragment())
+        fragmentLoader(LoginTwitterFragment(),LoginTwitterFragment::class.java.simpleName)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -45,12 +46,16 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         Toast.makeText(this, "MainActivity onActivityResult called", Toast.LENGTH_LONG)
+        val fragment : Fragment? = supportFragmentManager.findFragmentByTag(LoginTwitterFragment::class.java.simpleName)
+        fragment?.let {
+            fragment.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
-    fun fragmentLoader(fragment: Fragment) {
+    fun fragmentLoader(fragment: Fragment, tag:String) {
         val fm = supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_container, fragment)
+                .replace(R.id.main_container, fragment,tag)
                 .commit()
     }
 }
