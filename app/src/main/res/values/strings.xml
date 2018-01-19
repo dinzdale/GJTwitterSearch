@@ -3,4 +3,5 @@
     <string name="action_settings">Settings</string>
     <string name="com.twitter.sdk.android.CONSUMER_KEY">uik9Nq8q7tFB07FO3obgl2ctc</string>
     <string name="com.twitter.sdk.android.CONSUMER_SECRET">rP6pn6hR3X58P3MxdQNCLeGdKcvZPOwoBSKFuVEcFbfYQp78EB</string>
+    <string name="search_hint">enter search</string>
 </resources>
