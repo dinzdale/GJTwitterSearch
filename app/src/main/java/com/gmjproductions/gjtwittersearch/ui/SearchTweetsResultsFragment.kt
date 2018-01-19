@@ -36,11 +36,7 @@ class SearchTweetsResultsFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-<<<<<<< HEAD
         return inflater.inflate(R.layout.search_tweets_results, null)
-=======
-        return inflater.inflate(R.layout.tweet_search, null)
->>>>>>> 87d7db6f0b3445a642258af322f7b8a363555189
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,16 +48,14 @@ class SearchTweetsResultsFragment : Fragment() {
 
         tweetsViewModel.tweetList.observe(this, object : Observer<List<Tweet>> {
             override fun onChanged(tweetList: List<Tweet>?) {
-<<<<<<< HEAD
                 tweetList?.let {
                     if (tweetList.size > 0) {
                         (tweets_results_list.adapter as TweetListAdapter).tweetList = tweetList!!
                         tweets_results_list.adapter.notifyDataSetChanged()
                     }
                 }
-=======
+
                 tweets_results_list.adapter.notifyDataSetChanged()
->>>>>>> 87d7db6f0b3445a642258af322f7b8a363555189
             }
         })
     }
@@ -72,11 +66,8 @@ class SearchTweetsResultsFragment : Fragment() {
     }
 
     inner class TweetListAdapter(tweetList: List<Tweet>) : RecyclerView.Adapter<TweetViewHolder>() {
-<<<<<<< HEAD
+
         var tweetList = tweetList
-=======
-        val tweetList = tweetList
->>>>>>> 87d7db6f0b3445a642258af322f7b8a363555189
 
         override fun onBindViewHolder(holder: TweetViewHolder, position: Int) {
             holder.tweetView.tweet = tweetList.get(position)

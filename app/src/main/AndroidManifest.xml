@@ -11,11 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-<<<<<<< HEAD
             android:name=".ui.LoginActivity"
-=======
-            android:name=".ui.SearchTweetsActivity"
->>>>>>> 87d7db6f0b3445a642258af322f7b8a363555189
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
