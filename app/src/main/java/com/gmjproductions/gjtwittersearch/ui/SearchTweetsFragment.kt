@@ -17,15 +17,17 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
 import com.gmjproductions.gjtwittersearch.model.SessionViewModel
-import com.gmjproductions.gjtwittersearch.ui.MainActivity
+import com.gmjproductions.gjtwittersearch.model.TweetsViewModel
+import com.gmjproductions.gjtwittersearch.ui.SearchTweetsActivity
+<<<<<<< HEAD
+import com.gmjproductions.gjtwittersearch.ui.widgets.ComboBox
+=======
+>>>>>>> 87d7db6f0b3445a642258af322f7b8a363555189
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.models.Search
-import com.twitter.sdk.android.core.models.Tweet
-import com.twitter.sdk.android.core.services.params.Geocode
-import com.twitter.sdk.android.tweetui.TweetView
+
 import kotlinx.android.synthetic.main.search_tweets.*
-import kotlinx.android.synthetic.main.search_tweets.view.*
-import retrofit2.http.Query
+
 
 /**
  * Created by garyjacobs on 1/17/18.
@@ -33,7 +35,13 @@ import retrofit2.http.Query
 class SearchTweetsFragment : Fragment() {
 
     lateinit var sessionViewModel: SessionViewModel
-    lateinit var myActivity: MainActivity
+<<<<<<< HEAD
+    lateinit var tweetsViewModel: TweetsViewModel
+=======
+    lateinit var tweetsViewModel : TweetsViewModel
+>>>>>>> 87d7db6f0b3445a642258af322f7b8a363555189
+
+    lateinit var myActivity: SearchTweetsActivity
 
     companion object {
         @JvmStatic
@@ -48,8 +56,9 @@ class SearchTweetsFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        myActivity = activity as MainActivity
+        myActivity = activity as SearchTweetsActivity
         sessionViewModel = ViewModelProviders.of(myActivity).get(SessionViewModel::class.java)
+        tweetsViewModel = ViewModelProviders.of(myActivity).get(TweetsViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,8 +66,26 @@ class SearchTweetsFragment : Fragment() {
         // get twitterApiClient from connected session
         //twitterApiClient = TwitterCore.getInstance().getApiClient(sessionViewModel.session)
         twitterApiClient = TwitterCore.getInstance().getApiClient()
-        tweet_list.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
 
+<<<<<<< HEAD
+        search_entry.setOnClickListener {
+            val view = it as ComboBox
+            val call = twitterApiClient.searchService.tweets(view.text.toString(),
+                    null,
+                    "en",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null)
+            call.enqueue(object : Callback<Search>() {
+                override fun success(result: Result<Search>?) {
+                    result?.data?.tweets?.let {
+                        // Update view model and get list updated
+                        tweetsViewModel.tweetList.value = it
+=======
         search_entry.setOnEditorActionListener { textView, actionId, _ ->
             var retValue = false
             if (actionId == KeyEvent.KEYCODE_CALL || actionId == KeyEvent.KEYCODE_ENDCALL) {
@@ -80,10 +107,19 @@ class SearchTweetsFragment : Fragment() {
                 call.enqueue(object : Callback<Search>() {
                     override fun success(result: Result<Search>?) {
                         result?.data?.tweets?.let {
-                            tweet_list.adapter = TweetListAdapter(it)
+                            tweetsViewModel.tweetList.value = it
                         }
+>>>>>>> 87d7db6f0b3445a642258af322f7b8a363555189
                     }
+                }
 
+<<<<<<< HEAD
+                override fun failure(exception: TwitterException?) {
+                    Toast.makeText(context, "Search Failed: ${exception!!.message}", Toast.LENGTH_LONG).show()
+                }
+            })
+
+=======
                     override fun failure(exception: TwitterException?) {
                         Toast.makeText(context, "Search Failed: ${exception!!.message}", Toast.LENGTH_LONG).show()
                     }
@@ -91,30 +127,7 @@ class SearchTweetsFragment : Fragment() {
 
             }
             retValue
-        }
-
-
-    }
-
-    // set up list
-    class TweetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tweetView : TweetView = itemView as TweetView
-    }
-
-    inner class TweetListAdapter(tweetList: List<Tweet>) : RecyclerView.Adapter<TweetViewHolder>() {
-        val tweetList = tweetList
-
-        override fun onBindViewHolder(holder: TweetViewHolder, position: Int) {
-            holder.tweetView.tweet = tweetList.get(position)
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TweetViewHolder {
-            return TweetViewHolder(TweetView(context, tweetList[0]))
-
-        }
-
-        override fun getItemCount(): Int {
-            return tweetList.size
+>>>>>>> 87d7db6f0b3445a642258af322f7b8a363555189
         }
     }
 }
