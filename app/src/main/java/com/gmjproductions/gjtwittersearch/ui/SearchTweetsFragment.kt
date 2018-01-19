@@ -14,7 +14,9 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
 import com.gmjproductions.gjtwittersearch.model.SessionViewModel
@@ -36,7 +38,8 @@ class SearchTweetsFragment : Fragment() {
 
     lateinit var sessionViewModel: SessionViewModel
     lateinit var tweetsViewModel: TweetsViewModel
-
+    lateinit var isomapping : Array<String>
+    var selectedLanguage: String? = null
 
     lateinit var myActivity: SearchTweetsActivity
 
@@ -68,7 +71,7 @@ class SearchTweetsFragment : Fragment() {
             val view = it as ComboBox
             val call = twitterApiClient.searchService.tweets(view.text.toString(),
                     null,
-                    "en",
+                    selectedLanguage,
                     null,
                     null,
                     null,
@@ -79,17 +82,40 @@ class SearchTweetsFragment : Fragment() {
             call.enqueue(object : Callback<Search>() {
                 override fun success(result: Result<Search>?) {
                     result?.data?.tweets?.let {
-                        // Update view model and get list updated
+                        // Update view model and trigger twee list update
                         tweetsViewModel.tweetList.value = it
                     }
 
                 }
 
                 override fun failure(exception: TwitterException?) {
-                    Toast.makeText(this@SearchTweetsFragment.context,"${exception!!.message}",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@SearchTweetsFragment.context, "${exception!!.message}", Toast.LENGTH_LONG).show()
                 }
             })
         }
+        isomapping = resources.getStringArray(R.array.language_iso_639_1)
+
+        setLanguageChoiceAdapter(language_spinner, { selectedLanguage = it })
+
+    }
+
+
+    fun setLanguageChoiceAdapter(spinner: Spinner, isoMappingCallback: ((String) -> Unit)?) {
+        val adapter = ArrayAdapter.createFromResource(this.context, R.array.language_choices, android.R.layout.simple_spinner_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, index: Int, p3: Long) {
+                isoMappingCallback?.let {
+                    isoMappingCallback.invoke(isomapping[index])
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+
 
     }
 }
