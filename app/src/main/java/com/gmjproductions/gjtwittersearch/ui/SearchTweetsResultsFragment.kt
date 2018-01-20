@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -49,10 +50,8 @@ class SearchTweetsResultsFragment : Fragment() {
         tweetsViewModel.tweetList.observe(this, object : Observer<List<Tweet>> {
             override fun onChanged(tweetList: List<Tweet>?) {
                 tweetList?.let {
-                    if (tweetList.size > 0) {
-                        (tweets_results_list.adapter as TweetListAdapter).tweetList = tweetList!!
-                        tweets_results_list.adapter.notifyDataSetChanged()
-                    }
+                    (tweets_results_list.adapter as TweetListAdapter).tweetList = tweetList!!
+                    tweets_results_list.adapter.notifyDataSetChanged()
                 }
 
                 tweets_results_list.adapter.notifyDataSetChanged()
@@ -60,7 +59,7 @@ class SearchTweetsResultsFragment : Fragment() {
         })
     }
 
-    // set up list
+    // tweet list components
     class TweetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tweetView: TweetView = itemView as TweetView
     }
@@ -74,6 +73,8 @@ class SearchTweetsResultsFragment : Fragment() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TweetViewHolder {
+            // create an initial TweetView with any Tweet...
+            // new Tweet will be bound during onBindViewHolder before display
             return TweetViewHolder(TweetView(context, tweetList[0]))
 
         }
