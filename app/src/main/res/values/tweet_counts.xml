@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer-array name="tweet_counts">
+    <string-array name="tweet_counts">
+        <item>15</item>
         <item>30</item>
         <item>50</item>
         <item>100</item>
         <item>150</item>
         <item>200</item>
-    </integer-array>
+    </string-array>
 </resources>

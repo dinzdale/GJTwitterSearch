@@ -38,8 +38,9 @@ class SearchTweetsFragment : Fragment() {
 
     lateinit var sessionViewModel: SessionViewModel
     lateinit var tweetsViewModel: TweetsViewModel
-    lateinit var isomapping : Array<String>
+    lateinit var isomapping: Array<String>
     var selectedLanguage: String? = null
+    var selectedCount: Int = 15
 
     lateinit var myActivity: SearchTweetsActivity
 
@@ -74,7 +75,7 @@ class SearchTweetsFragment : Fragment() {
                     selectedLanguage,
                     null,
                     null,
-                    null,
+                    selectedCount,
                     null,
                     null,
                     null,
@@ -95,17 +96,16 @@ class SearchTweetsFragment : Fragment() {
         }
         isomapping = resources.getStringArray(R.array.language_iso_639_1)
 
-        setLanguageChoiceAdapter(language_spinner, { selectedLanguage = it })
-
+        setUpLanguageSpinner(language_spinner, { selectedLanguage = it })
+        setUpCountSpinner(count_spinner, { selectedCount = it })
     }
 
 
-    fun setLanguageChoiceAdapter(spinner: Spinner, isoMappingCallback: ((String) -> Unit)?) {
+    fun setUpLanguageSpinner(spinner: Spinner, isoMappingCallback: ((String) -> Unit)?) {
         val adapter = ArrayAdapter.createFromResource(this.context, R.array.language_choices, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, index: Int, p3: Long) {
                 isoMappingCallback?.let {
                     isoMappingCallback.invoke(isomapping[index])
@@ -115,7 +115,22 @@ class SearchTweetsFragment : Fragment() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
+    }
 
+    fun setUpCountSpinner(spinner: Spinner, countCallback: ((Int) -> Unit)?) {
+        val adapter = ArrayAdapter.createFromResource(this.context, R.array.tweet_counts, android.R.layout.simple_spinner_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
 
+            override fun onItemSelected(adapter: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
+                countCallback?.let {
+                    val value = adapter!!.getItemAtPosition(pos).toString().toInt()
+                    countCallback.invoke(value)
+                }
+            }
+        }
     }
 }

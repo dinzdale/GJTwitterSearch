@@ -5,6 +5,7 @@
     <string name="com.twitter.sdk.android.CONSUMER_SECRET">rP6pn6hR3X58P3MxdQNCLeGdKcvZPOwoBSKFuVEcFbfYQp78EB</string>
     <string name="search_hint">enter search</string>
     <!--  Labels -->
+    <string name="search">search</string>
     <string name="language">language</string>
     <string name="count">count</string>
 </resources>
