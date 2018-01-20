@@ -1,5 +1,6 @@
 package com.gmjproductions.gjtwittersearch.ui
 
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.support.v4.app.Fragment
@@ -34,23 +35,25 @@ fun FragmentActivity.removeFragment(tag: String) {
     }
 }
 
-fun Context.showTweetAlertDialog(message: Int, title: Int? = R.string.default_tweet_dialog_title, icon: Int? = com.twitter.sdk.android.tweetui.R.drawable.tw__ic_logo_blue, okCallback: (() -> Unit)? = null) {
-    showTweetAlertDialog(resources.getString(message), title, icon, okCallback)
+fun Context.showTweetAlertDialog(message: Int, title: Int? = R.string.default_tweet_dialog_title, icon: Int? = com.twitter.sdk.android.tweetui.R.drawable.tw__ic_logo_blue, okCallback: (() -> Unit)? = null): Dialog {
+    return showTweetAlertDialog(resources.getString(message), title, icon, okCallback)
 }
 
-fun Context.showTweetAlertDialog(message: String, title: Int? = R.string.default_tweet_dialog_title, icon: Int? = com.twitter.sdk.android.tweetui.R.drawable.tw__ic_logo_blue, okCallback: (() -> Unit)? = null) {
-    AlertDialog.Builder(this)
+fun Context.showTweetAlertDialog(message: String, title: Int? = R.string.default_tweet_dialog_title, icon: Int? = com.twitter.sdk.android.tweetui.R.drawable.tw__ic_logo_blue, okCallback: (() -> Unit)? = null): Dialog {
+    val builder = AlertDialog.Builder(this)
             .setMessage(message)
             .setTitle(title!!)
             .setIcon(icon!!)
-            .setPositiveButton(android.R.string.ok, object : DialogInterface.OnClickListener {
-                override fun onClick(dialogInterface: DialogInterface?, p1: Int) {
-                    okCallback?.let {
-                        okCallback.invoke()
-                    }
-                }
-            })
-            .create()
-            .show()
+
+    okCallback?.let {
+        builder.setPositiveButton(android.R.string.ok, object : DialogInterface.OnClickListener {
+            override fun onClick(dialogInterface: DialogInterface?, p1: Int) {
+                it.invoke()
+            }
+        })
+    }
+    val dialog = builder.create()
+    dialog.show()
+    return dialog
 
 }

@@ -12,4 +12,5 @@
     <string name="no_search_results">Apologies...Your search did not return any results</string>
     <string name="login_issue_title">Login Information</string>
     <string name="default_tweet_dialog_title">Tweet Information</string>
+    <string name="loading_tweets">Retrieving Tweets...</string>
 </resources>

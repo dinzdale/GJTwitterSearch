@@ -1,5 +1,6 @@
 package layout
 
+import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
@@ -35,7 +36,7 @@ class SearchTweetsFragment : Fragment() {
     lateinit var isomapping: Array<String>
     var selectedLanguage: String? = null
     var selectedCount: Int = 0
-
+    var loadingDialog: Dialog? = null
     // shared preference keys
     var LANGUAGE = "LANGUAGE"
     var COUNT = "COUNT"
@@ -67,6 +68,7 @@ class SearchTweetsFragment : Fragment() {
         twitterApiClient = TwitterCore.getInstance().getApiClient()
 
         search_entry.setOnClickListener {
+            loadingDialog = context?.showTweetAlertDialog(R.string.loading_tweets)
             val view = it as ComboBox
             val call = twitterApiClient.searchService.tweets(view.text.toString(),
                     null,
@@ -80,19 +82,21 @@ class SearchTweetsFragment : Fragment() {
                     null)
             call.enqueue(object : Callback<Search>() {
                 override fun success(result: Result<Search>?) {
+                    loadingDialog?.dismiss()
                     result?.data?.tweets?.let {
                         if (it.size > 0) {
                             // Update view model and trigger twee list update
                             tweetsViewModel.tweetList.value = it
                         } else {
-                            context?.showTweetAlertDialog(R.string.no_search_results)
+                            context?.showTweetAlertDialog(R.string.no_search_results,okCallback = {})
                         }
                     }
 
                 }
 
-                override fun failure(exception: TwitterException?) {
-                    Toast.makeText(this@SearchTweetsFragment.context, "${exception!!.message}", Toast.LENGTH_LONG).show()
+                override fun failure(exception: TwitterException) {
+                    loadingDialog?.dismiss()
+                    context?.showTweetAlertDialog(exception.message!!, icon = android.R.drawable.ic_dialog_alert, okCallback = {})
                 }
             })
         }
