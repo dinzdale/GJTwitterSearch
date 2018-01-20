@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GJTwitterSearch</string>
+    <string name="app_name">GJTweetsSearch</string>
     <string name="action_settings">Settings</string>
     <string name="com.twitter.sdk.android.CONSUMER_KEY">uik9Nq8q7tFB07FO3obgl2ctc</string>
     <string name="com.twitter.sdk.android.CONSUMER_SECRET">rP6pn6hR3X58P3MxdQNCLeGdKcvZPOwoBSKFuVEcFbfYQp78EB</string>
@@ -8,4 +8,8 @@
     <string name="search">search</string>
     <string name="language">language</string>
     <string name="count">count</string>
+    <!-- Alert Messages -->
+    <string name="no_search_results">Apologies...Your search did not return any results</string>
+    <string name="login_issue_title">Login Information</string>
+    <string name="default_tweet_dialog_title">Tweet Information</string>
 </resources>

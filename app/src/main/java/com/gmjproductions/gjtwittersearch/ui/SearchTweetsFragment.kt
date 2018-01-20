@@ -15,6 +15,7 @@ import com.gmjproductions.gjtwittersearch.R
 import com.gmjproductions.gjtwittersearch.model.SessionViewModel
 import com.gmjproductions.gjtwittersearch.model.TweetsViewModel
 import com.gmjproductions.gjtwittersearch.ui.SearchTweetsActivity
+import com.gmjproductions.gjtwittersearch.ui.showTweetAlertDialog
 
 import com.gmjproductions.gjtwittersearch.ui.widgets.ComboBox
 
@@ -80,8 +81,12 @@ class SearchTweetsFragment : Fragment() {
             call.enqueue(object : Callback<Search>() {
                 override fun success(result: Result<Search>?) {
                     result?.data?.tweets?.let {
-                        // Update view model and trigger twee list update
-                        tweetsViewModel.tweetList.value = it
+                        if (it.size > 0) {
+                            // Update view model and trigger twee list update
+                            tweetsViewModel.tweetList.value = it
+                        } else {
+                            context?.showTweetAlertDialog(R.string.no_search_results)
+                        }
                     }
 
                 }

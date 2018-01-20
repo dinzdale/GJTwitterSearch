@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.login_twitter.login_button
 /**
  * Created by garyjacobs on 1/19/18.
  */
-class LoginActivity : AppCompatActivity() {
+class SearchTweetsLoginActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,14 +22,12 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.login_twitter)
         login_button.callback = object : Callback<TwitterSession>() {
             override fun success(result: Result<TwitterSession>?) {
-                Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_LONG).show()
-                val intent = Intent(this@LoginActivity, SearchTweetsActivity::class.java)
+                val intent = Intent(this@SearchTweetsLoginActivity, SearchTweetsActivity::class.java)
                 startActivity(intent)
             }
 
-            override fun failure(exception: TwitterException?) {
-
-                Toast.makeText(this@LoginActivity, "Failed to login: ${exception!!.message}", Toast.LENGTH_LONG).show()
+            override fun failure(exception: TwitterException) {
+                showTweetAlertDialog(exception.message!!,R.string.login_issue_title)
             }
         }
     }
