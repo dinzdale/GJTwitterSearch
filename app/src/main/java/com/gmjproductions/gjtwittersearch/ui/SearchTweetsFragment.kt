@@ -2,15 +2,8 @@ package layout
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.AppCompatEditText
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.telecom.Call
-import android.util.AttributeSet
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +33,11 @@ class SearchTweetsFragment : Fragment() {
     lateinit var tweetsViewModel: TweetsViewModel
     lateinit var isomapping: Array<String>
     var selectedLanguage: String? = null
-    var selectedCount: Int = 15
+    var selectedCount: Int = 0
+
+    // shared preference keys
+    var LANGUAGE = "LANGUAGE"
+    var COUNT = "COUNT"
 
     lateinit var myActivity: SearchTweetsActivity
 
@@ -64,8 +61,8 @@ class SearchTweetsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         // get twitterApiClient from connected session
-        //twitterApiClient = TwitterCore.getInstance().getApiClient(sessionViewModel.session)
         twitterApiClient = TwitterCore.getInstance().getApiClient()
 
         search_entry.setOnClickListener {
@@ -94,8 +91,8 @@ class SearchTweetsFragment : Fragment() {
                 }
             })
         }
-        isomapping = resources.getStringArray(R.array.language_iso_639_1)
 
+        isomapping = resources.getStringArray(R.array.language_iso_639_1)
         setUpLanguageSpinner(language_spinner, { selectedLanguage = it })
         setUpCountSpinner(count_spinner, { selectedCount = it })
     }
@@ -106,7 +103,7 @@ class SearchTweetsFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, index: Int, p3: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, index: Int, id: Long) {
                 isoMappingCallback?.let {
                     isoMappingCallback.invoke(isomapping[index])
                 }
@@ -122,15 +119,38 @@ class SearchTweetsFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
             }
 
-            override fun onItemSelected(adapter: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, index: Int, id: Long) {
                 countCallback?.let {
-                    val value = adapter!!.getItemAtPosition(pos).toString().toInt()
+                    val value = adapter!!.getItem(index).toString().toInt()
                     countCallback.invoke(value)
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // restore preferences
+        var sharedPreferences = context!!.getSharedPreferences(TAG, 0)
+        sharedPreferences.getInt(LANGUAGE, 0)?.let {
+            language_spinner.setSelection(it)
+        }
+        sharedPreferences.getInt(COUNT, 0)?.let {
+            count_spinner.setSelection(it)
+        }
+        selectedCount = count_spinner.selectedItem.toString().toInt()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // save preferences
+        val sharedPreferences = context!!.getSharedPreferences(TAG, 0)
+        sharedPreferences.edit()
+                .putInt(LANGUAGE, language_spinner.selectedItemPosition)
+                .putInt(COUNT, count_spinner.selectedItemPosition)
+                .commit()
     }
 }
