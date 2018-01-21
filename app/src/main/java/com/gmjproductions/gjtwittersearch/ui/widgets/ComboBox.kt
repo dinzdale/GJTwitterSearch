@@ -1,13 +1,17 @@
 package com.gmjproductions.gjtwittersearch.ui.widgets
 
 import android.content.Context
+import android.support.v4.view.GestureDetectorCompat
 import android.support.v7.widget.AppCompatAutoCompleteTextView
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import io.reactivex.Observable
 
 
 class ComboBox : AppCompatAutoCompleteTextView {
@@ -35,7 +39,16 @@ class ComboBox : AppCompatAutoCompleteTextView {
                 performCompletion()
             }
         }
-
+        /**
+         * Listen for single tap motionevents and clear text if tapped on eraser image
+         */
+        getSingleTapObservable(this )
+                .subscribe { motionEvent ->
+                    val DRAWABLE_RIGHT = 2;
+                    if (motionEvent.getRawX() >= (getRight() - getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        text.clear()
+                    }
+                }
     }
 
     override fun setOnClickListener(listener: OnClickListener?) {
@@ -96,4 +109,21 @@ class ComboBox : AppCompatAutoCompleteTextView {
         return text.toString()
     }
 
+    /**
+     * Get an observable for listening to single click MotionEvents
+     */
+    fun getSingleTapObservable(view: View): Observable<MotionEvent> {
+        return Observable.create<MotionEvent> { emitter ->
+            val gestureDetecor = GestureDetectorCompat(view.context, object : GestureDetector.SimpleOnGestureListener() {
+                override fun onSingleTapConfirmed(motionEvent: MotionEvent): Boolean {
+                    emitter.onNext(motionEvent!!)
+                    return super.onSingleTapConfirmed(motionEvent)
+                }
+            })
+
+            view.setOnTouchListener { v, event ->
+                gestureDetecor.onTouchEvent(event)
+            }
+        }
+    }
 }
