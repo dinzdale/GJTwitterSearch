@@ -54,6 +54,7 @@ class ComboBox : AppCompatAutoCompleteTextView {
         this.listener = listener
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         setOnEditorActionListener { _, actionId, _ ->
@@ -83,6 +84,7 @@ class ComboBox : AppCompatAutoCompleteTextView {
         return status
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun updateComboBoxSelections(newList: List<String>) {
         val theAdapter = adapter as ArrayAdapter<String>
         theAdapter.clear()
@@ -115,12 +117,12 @@ class ComboBox : AppCompatAutoCompleteTextView {
         return Observable.create<MotionEvent> { emitter ->
             val gestureDetecor = GestureDetectorCompat(view.context, object : GestureDetector.SimpleOnGestureListener() {
                 override fun onSingleTapConfirmed(motionEvent: MotionEvent): Boolean {
-                    emitter.onNext(motionEvent!!)
+                    emitter.onNext(motionEvent)
                     return super.onSingleTapConfirmed(motionEvent)
                 }
             })
 
-            view.setOnTouchListener { v, event ->
+            view.setOnTouchListener { _, event ->
                 gestureDetecor.onTouchEvent(event)
             }
         }
