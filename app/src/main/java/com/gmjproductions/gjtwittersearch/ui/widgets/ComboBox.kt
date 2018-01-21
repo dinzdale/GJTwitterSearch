@@ -1,5 +1,4 @@
 package com.gmjproductions.gjtwittersearch.ui.widgets
-
 import android.content.Context
 import android.support.v4.view.GestureDetectorCompat
 import android.support.v7.widget.AppCompatAutoCompleteTextView
