@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import com.gmjproductions.gjtwittersearch.R
+import kotlinx.android.synthetic.main.login_twitter.*
 import layout.SearchTweetsFragment
 
 /**
@@ -38,6 +39,9 @@ class SearchTweetsActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putBoolean(CONFIGCHANGED, true)

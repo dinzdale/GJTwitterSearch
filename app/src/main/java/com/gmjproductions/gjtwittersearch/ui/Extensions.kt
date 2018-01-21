@@ -1,11 +1,16 @@
 package com.gmjproductions.gjtwittersearch.ui
 
+import android.animation.ObjectAnimator
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AlertDialog
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.RotateAnimation
+import android.widget.Button
 import com.gmjproductions.gjtwittersearch.R
 
 
@@ -57,3 +62,5 @@ fun Context.showTweetAlertDialog(message: String, title: Int? = R.string.default
     return dialog
 
 }
+
+

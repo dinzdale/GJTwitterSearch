@@ -8,6 +8,8 @@
     <string name="search">search</string>
     <string name="language">language</string>
     <string name="count">count</string>
+    <string name="tweet_search">Tweet Search</string>
+    <string name="gary_jacobs">by Gary Jacobs</string>
     <!-- Alert Messages -->
     <string name="no_search_results">Apologies...Your search did not return any results</string>
     <string name="login_issue_title">Login Information</string>
