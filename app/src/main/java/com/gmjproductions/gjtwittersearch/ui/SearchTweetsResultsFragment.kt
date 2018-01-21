@@ -50,7 +50,7 @@ class SearchTweetsResultsFragment : Fragment() {
         tweetsViewModel.tweetList.observe(this, object : Observer<List<Tweet>> {
             override fun onChanged(tweetList: List<Tweet>?) {
                 tweetList?.let {
-                    (tweets_results_list.adapter as TweetListAdapter).tweetList = tweetList!!
+                    (tweets_results_list.adapter as TweetListAdapter).tweetList = tweetList
                     tweets_results_list.adapter.notifyDataSetChanged()
                 }
 

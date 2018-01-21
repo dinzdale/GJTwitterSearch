@@ -88,7 +88,7 @@ class SearchTweetsFragment : Fragment() {
                             // Update view model and trigger twee list update
                             tweetsViewModel.tweetList.value = it
                         } else {
-                            context?.showTweetAlertDialog(R.string.no_search_results,okCallback = {})
+                            context?.showTweetAlertDialog(R.string.no_search_results, okCallback = {})
                         }
                     }
 
@@ -144,12 +144,9 @@ class SearchTweetsFragment : Fragment() {
         super.onResume()
         // restore preferences
         var sharedPreferences = context!!.getSharedPreferences(TAG, 0)
-        sharedPreferences.getInt(LANGUAGE, 0)?.let {
-            language_spinner.setSelection(it)
-        }
-        sharedPreferences.getInt(COUNT, 0)?.let {
-            count_spinner.setSelection(it)
-        }
+        language_spinner.setSelection(sharedPreferences.getInt(LANGUAGE, 0))
+        count_spinner.setSelection(sharedPreferences.getInt(COUNT, 0))
+
         selectedCount = count_spinner.selectedItem.toString().toInt()
     }
 
