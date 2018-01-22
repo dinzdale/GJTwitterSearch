@@ -11,15 +11,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
-import com.gmjproductions.gjtwittersearch.model.SessionViewModel
 import com.gmjproductions.gjtwittersearch.model.TweetsViewModel
 import com.gmjproductions.gjtwittersearch.ui.SearchTweetsActivity
 import com.gmjproductions.gjtwittersearch.ui.showTweetAlertDialog
-
 import com.gmjproductions.gjtwittersearch.ui.widgets.ComboBox
-
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.models.Search
 
@@ -31,7 +27,6 @@ import kotlinx.android.synthetic.main.search_tweets.*
  */
 class SearchTweetsFragment : Fragment() {
 
-    lateinit var sessionViewModel: SessionViewModel
     lateinit var tweetsViewModel: TweetsViewModel
     lateinit var isomapping: Array<String>
     var selectedLanguage: String? = null
@@ -57,7 +52,6 @@ class SearchTweetsFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         myActivity = activity as SearchTweetsActivity
-        sessionViewModel = ViewModelProviders.of(myActivity).get(SessionViewModel::class.java)
         tweetsViewModel = ViewModelProviders.of(myActivity).get(TweetsViewModel::class.java)
     }
 

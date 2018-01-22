@@ -9,8 +9,6 @@ import com.twitter.sdk.android.core.models.Tweet
 /**
  * Created by garyjacobs on 1/18/18.
  */
-data class SessionViewModel(var session: TwitterSession? = null) : ViewModel()
-
 data class TweetsViewModel(val void: Unit? = null) : ViewModel() {
     var tweetList: MutableLiveData<List<Tweet>> = object : MutableLiveData<List<Tweet>>() {}
     init {
