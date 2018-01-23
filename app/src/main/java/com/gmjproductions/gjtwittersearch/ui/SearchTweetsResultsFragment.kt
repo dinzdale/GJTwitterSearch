@@ -53,8 +53,6 @@ class SearchTweetsResultsFragment : Fragment() {
                     (tweets_results_list.adapter as TweetListAdapter).tweetList = tweetList
                     tweets_results_list.adapter.notifyDataSetChanged()
                 }
-
-                tweets_results_list.adapter.notifyDataSetChanged()
             }
         })
     }
