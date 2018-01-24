@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
 import com.gmjproductions.gjtwittersearch.model.TweetsViewModel
 import com.twitter.sdk.android.core.models.Tweet
@@ -57,6 +58,10 @@ class SearchTweetsResultsFragment : Fragment() {
         })
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Toast.makeText(this.context,"$TAG onDestroy",Toast.LENGTH_LONG).show()
+    }
     // tweet list components
     class TweetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tweetView: TweetView = itemView as TweetView
