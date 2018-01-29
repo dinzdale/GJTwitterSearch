@@ -9,7 +9,9 @@ import com.twitter.sdk.android.core.Callback
 import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterException
 import com.twitter.sdk.android.core.TwitterSession
-import kotlinx.android.synthetic.main.login_twitter.login_button
+import kotlinx.android.synthetic.main.login_twitter.*
+import android.util.DisplayMetrics
+
 
 /**
  * Created by garyjacobs on 1/19/18.
@@ -27,8 +29,15 @@ class SearchTweetsLoginActivity : AppCompatActivity() {
             }
 
             override fun failure(exception: TwitterException) {
-                showTweetAlertDialog(exception.message!!,R.string.login_issue_title)
+                showTweetAlertDialog(exception.message!!, R.string.login_issue_title)
             }
+        }
+        show_res.setOnClickListener {
+            val displayMetrics = this@SearchTweetsLoginActivity.getResources().getDisplayMetrics()
+            val dpHeight: Int = (displayMetrics.heightPixels / displayMetrics.density).toInt()
+            val dpWidth: Int = (displayMetrics.widthPixels / displayMetrics.density).toInt()
+            val message = getString(R.string.display_res, dpWidth, dpHeight)
+            this@SearchTweetsLoginActivity.showTweetAlertDialog(message, okCallback = {})
         }
     }
 

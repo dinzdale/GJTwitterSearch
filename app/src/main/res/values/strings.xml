@@ -8,6 +8,7 @@
     <string name="search">search</string>
     <string name="language">language</string>
     <string name="count">count</string>
+    <string name="show_res">show resolution</string>
     <string name="tweet_search">Tweet Search</string>
     <string name="gary_jacobs">by Gary Jacobs</string>
     <!-- Alert Messages -->
@@ -15,4 +16,5 @@
     <string name="login_issue_title">Login Information</string>
     <string name="default_tweet_dialog_title">Tweet Information</string>
     <string name="loading_tweets">Retrieving Tweets...</string>
+    <string name="display_res">"width: %1$ddp  height: %2$ddp"</string>
 </resources>
