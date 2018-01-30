@@ -58,10 +58,16 @@ class SearchTweetsResultsFragment : Fragment() {
         })
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //context?.showToast(getString(R.string.on_create, TAG), Toast.LENGTH_SHORT)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        Toast.makeText(this.context,"$TAG onDestroy",Toast.LENGTH_LONG).show()
+        context?.showToast(getString(R.string.on_destroy, TAG), Toast.LENGTH_LONG)
     }
+
     // tweet list components
     class TweetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tweetView: TweetView = itemView as TweetView

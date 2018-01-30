@@ -6,6 +6,9 @@ import android.content.DialogInterface
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AlertDialog
+import android.view.LayoutInflater
+import android.widget.TextView
+import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
 
 
@@ -58,4 +61,12 @@ fun Context.showTweetAlertDialog(message: String, title: Int? = R.string.default
 
 }
 
+fun Context.showToast(message: String, duration: Int = Toast.LENGTH_LONG) {
+    val layout = LayoutInflater.from(this).inflate(R.layout.toast_message_layout, null)
+    val toast = Toast(this)
+    toast.view = layout
+    val textView = layout.findViewById<TextView>(R.id.toast_message)
+    textView.setText(message)
+    toast.show()
+}
 
