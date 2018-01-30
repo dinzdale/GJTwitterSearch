@@ -17,4 +17,7 @@
     <string name="default_tweet_dialog_title">Tweet Information</string>
     <string name="loading_tweets">Retrieving Tweets...</string>
     <string name="display_res">"width: %1$ddp  height: %2$ddp"</string>
+    <string name="on_create">"%1$s: onCreate</string>
+    <string name="on_destroy">"%1$s: onDestroy</string>
+
 </resources>
