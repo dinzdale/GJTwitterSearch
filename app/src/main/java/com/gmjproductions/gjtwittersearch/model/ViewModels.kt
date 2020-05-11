@@ -1,8 +1,8 @@
 package com.gmjproductions.gjtwittersearch.model
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.gmjproductions.gjtwittersearch.R
 import com.gmjproductions.gjtwittersearch.ui.showTweetAlertDialog
 import com.twitter.sdk.android.core.*

@@ -3,9 +3,9 @@ package com.gmjproductions.gjtwittersearch.ui
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v7.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.widget.TextView
 import android.widget.Toast
@@ -15,7 +15,7 @@ import com.gmjproductions.gjtwittersearch.R
 /**
  * Created by garyjacobs on 1/19/18.
  */
-fun FragmentActivity.fragmentLoader(fragment: Fragment, container: Int, tag: String, addToBackStack: Boolean = false) {
+fun AppCompatActivity.fragmentLoader(fragment: Fragment, container: Int, tag: String, addToBackStack: Boolean = false) {
     val fragTransaction = this.supportFragmentManager
             .beginTransaction()
             .replace(container, fragment, tag)
@@ -25,10 +25,10 @@ fun FragmentActivity.fragmentLoader(fragment: Fragment, container: Int, tag: Str
     fragTransaction.commit()
 }
 
-fun FragmentActivity.findFragment(tag: String): Fragment? = supportFragmentManager
+fun AppCompatActivity.findFragment(tag: String): Fragment? = supportFragmentManager
         .findFragmentByTag(tag)
 
-fun FragmentActivity.removeFragment(tag: String) {
+fun AppCompatActivity.removeFragment(tag: String) {
     val fragmentToRemove = findFragment(tag)
     fragmentToRemove?.let {
         supportFragmentManager

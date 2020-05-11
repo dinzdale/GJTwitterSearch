@@ -1,10 +1,10 @@
 package layout
 
 import android.app.Dialog
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +49,7 @@ class SearchTweetsFragment : Fragment() {
         return inflater.inflate(R.layout.search_tweets, null)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         myActivity = activity as SearchTweetsActivity
         tweetsViewModel = ViewModelProviders.of(myActivity).get(TweetsViewModel::class.java)
@@ -80,7 +80,7 @@ class SearchTweetsFragment : Fragment() {
 
 
     fun setUpLanguageSpinner(spinner: Spinner, isoMappingCallback: ((String) -> Unit)?) {
-        val adapter = ArrayAdapter.createFromResource(this.context, R.array.language_choices, android.R.layout.simple_spinner_item)
+        val adapter = ArrayAdapter.createFromResource(this.context!!, R.array.language_choices, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -96,7 +96,7 @@ class SearchTweetsFragment : Fragment() {
     }
 
     fun setUpCountSpinner(spinner: Spinner, countCallback: ((Int) -> Unit)?) {
-        val adapter = ArrayAdapter.createFromResource(this.context, R.array.tweet_counts, android.R.layout.simple_spinner_item)
+        val adapter = ArrayAdapter.createFromResource(this.context!!, R.array.tweet_counts, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

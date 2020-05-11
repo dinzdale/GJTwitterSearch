@@ -2,7 +2,7 @@ package com.gmjproductions.gjtwittersearch.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import com.gmjproductions.gjtwittersearch.R
 import com.twitter.sdk.android.core.Callback
@@ -41,7 +41,9 @@ class SearchTweetsLoginActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         // forward result to button
         login_button.onActivityResult(requestCode, resultCode, data)
         // remove this activity

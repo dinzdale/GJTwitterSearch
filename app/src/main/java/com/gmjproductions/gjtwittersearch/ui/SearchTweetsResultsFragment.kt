@@ -1,17 +1,16 @@
 package com.gmjproductions.gjtwittersearch.ui
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gmjproductions.gjtwittersearch.R
 import com.gmjproductions.gjtwittersearch.model.TweetsViewModel
 import com.twitter.sdk.android.core.models.Tweet
@@ -32,7 +31,7 @@ class SearchTweetsResultsFragment : Fragment() {
         val TAG = SearchTweetsFragment::class.java.simpleName
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         myActivity = activity as SearchTweetsActivity
     }
@@ -52,7 +51,7 @@ class SearchTweetsResultsFragment : Fragment() {
             override fun onChanged(tweetList: List<Tweet>?) {
                 tweetList?.let {
                     (tweets_results_list.adapter as TweetListAdapter).tweetList = tweetList
-                    tweets_results_list.adapter.notifyDataSetChanged()
+                    tweets_results_list.adapter?.notifyDataSetChanged()
                 }
             }
         })
@@ -81,7 +80,7 @@ class SearchTweetsResultsFragment : Fragment() {
             holder.tweetView.tweet = tweetList.get(position)
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TweetViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TweetViewHolder {
             // create an initial TweetView with any Tweet...
             // new Tweet will be bound during onBindViewHolder before display
             return TweetViewHolder(TweetView(context, tweetList[0]))
